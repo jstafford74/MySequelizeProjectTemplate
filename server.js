@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // Sets up the Express app to handle data parsing
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Static directory
@@ -27,8 +27,8 @@ require('./routes/api-routes.js')(app);
 
 // Starting our Express app
 // =============================================================
-app.listen(PORT, function() {
+app.listen(PORT, function () {
   console.log(`SERVER LISTENING ON: http://localhost:${PORT}`);
   console.log('----------------------------');
-
+  db.sequelize.sync();
 });
