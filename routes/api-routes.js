@@ -19,21 +19,31 @@ module.exports = function (app) {
   // POST route for saving a new todo.
   // We can create a todo using the data on req.body
   app.post('/api/todos', async (req, res) => {
-    const { text } = req.body;
-    const result = await db.Todo.create({
-      text,
-      complete: false,
-    });
-    res.json({ id: result.insertId });
-  });
+    try {
 
+      const result = await db.Todo.create({
+        text: req.body.text,
+
+      });
+      res.json(result);
+    } catch (error) {
+      res.json({ error: { ...error } });
+    }
+  });
 
   // DELETE route for deleting todos.
   // We can access the ID of the todo to delete in
   // req.params.id
   app.delete('/api/todos/:id', async (req, res) => {
+    const result = await db.Todo.destroy({
+      where: {
+        id: req.params.id
+      },
 
+    });
+    res.status(200).end(result);
   });
+
 
   // PUT route for updating todos.
   // We can access the updated todo in req.body
