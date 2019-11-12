@@ -12,8 +12,8 @@ const db = require('../models');
 module.exports = function (app) {
   // GET route for getting all of the todos
   app.get('/api/todos', async (req, res) => {
-    const results = await db.Todo.findAll({});
-    res.json(results);
+    const todos = await db.Todo.findAll({});
+    res.json(todos);
   });
 
   // POST route for saving a new todo.
@@ -23,6 +23,7 @@ module.exports = function (app) {
 
       const result = await db.Todo.create({
         text: req.body.text,
+        complete: false,
 
       });
       res.json(result);
@@ -41,7 +42,9 @@ module.exports = function (app) {
       },
 
     });
-    res.status(200).end(result);
+    const deletedRowCount = result;
+    const status = deletedRowCount > 0 ? 200 : 404;
+    res.status(status).json({ deletedRowCount });
   });
 
 
@@ -50,15 +53,22 @@ module.exports = function (app) {
   app.put('/api/todos', async (req, res) => {
 
     const { id, text, complete } = req.body;
-    const result = await db.Todo.update(
-      {
-        text,
-        complete
-      },
-      {
-        where: { id },
-      });
-    res.send(result);
-  });
 
+    try {
+      const result = await db.Todo.update(
+        {
+          text,
+          complete
+        },
+        {
+          where: { id },
+        },
+      );
+      const affectedRowCount = result[0];
+      const status = affectedRowCount > 0 ? 200 : 404;
+      res.status(status).json({ affectedRowCount });
+    } catch (error) {
+      res.json({ error: { ...error } });
+    }
+  });
 };
