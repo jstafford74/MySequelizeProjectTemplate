@@ -1,4 +1,4 @@
-* Folder: `07-ORM-To-Sequelize/Unsolved`
+ Folder: `07-ORM-To-Sequelize/Unsolved`
 
 * INSTRUCTIONS:
 
@@ -27,4 +27,13 @@
   10) Sync the models by running db.sequelize.sync() after we start the express server.
 
   11) In your terminal, run `npm run watch`. Check MYSQL Workbench to see if a Todos table was created.  If so, you were successful. If not, check your terminal for any errors.
+   
   12)  Now let's complete the `routes/api-routes.js` file to make the app work.
+  13)  If you have all routes done, (GET, PUT, POST, DELETE), add validation to your todo model so that:
+    1) text must be min 1 char long, max 140
+    2) text cannot be null
+    3) complete defaults to false if not passed
+
+  14) Modify your api routes to send an error msg back to client if validation fails
+  
+  15) Modify client js and HTML to display validation msg error to user.
